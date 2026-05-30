@@ -1,0 +1,23 @@
+{
+  "files.encoding": "gb2312",
+  "files.autoGuessEncoding": true,
+  "[plaintext]": {
+    "files.encoding": "gb2312"
+  },
+  "[html]": {
+    "files.encoding": "gb2312"
+  },
+  "[javascript]": {
+    "files.encoding": "gb2312"
+  },
+  "[css]": {
+    "files.encoding": "gb2312"
+  },
+  "[java]": {
+    "files.encoding": "gb2312"
+  },
+  "[python]": {
+    "files.encoding": "gb2312"
+  }
+}
+

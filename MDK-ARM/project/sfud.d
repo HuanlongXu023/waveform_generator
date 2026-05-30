@@ -1,0 +1,10 @@
+project\sfud.o: ..\sfud\src\sfud.c
+project\sfud.o: ../sfud/inc/sfud.h
+project\sfud.o: ../sfud/inc/sfud_def.h
+project\sfud.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+project\sfud.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+project\sfud.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdint.h
+project\sfud.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
+project\sfud.o: ../sfud/inc/sfud_cfg.h
+project\sfud.o: ../sfud/inc/sfud_flash_def.h
+project\sfud.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\string.h

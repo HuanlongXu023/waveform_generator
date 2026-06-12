@@ -1,5 +1,5 @@
-project\matrixkey.o: ..\matrixkey.c
-project\matrixkey.o: ..\matrixkey.h
+project\matrixkey.o: ..\Hardware\matrixkey.c
+project\matrixkey.o: ..\Hardware\matrixkey.h
 project\matrixkey.o: ../Core/Inc/main.h
 project\matrixkey.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\matrixkey.o: ../Core/Inc/stm32f4xx_hal_conf.h

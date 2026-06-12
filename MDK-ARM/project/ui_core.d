@@ -1,5 +1,5 @@
-project\ui_core.o: ..\ui_core.c
-project\ui_core.o: ..\ui_core.h
+project\ui_core.o: ..\GUI\ui_core.c
+project\ui_core.o: ..\GUI\ui_core.h
 project\ui_core.o: ../Core/Inc/main.h
 project\ui_core.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_core.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -63,13 +63,13 @@ project\ui_core.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_core.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_core.o: ../Core/Inc/tim.h
 project\ui_core.o: ../LCD/lcd.h
-project\ui_core.o: ..\ui_layout.h
+project\ui_core.o: ..\GUI\ui_layout.h
 project\ui_core.o: ..\APP\numeric_controller.h
 project\ui_core.o: ..\APP\waveform_generator.h
 project\ui_core.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
-project\ui_core.o: ..\ui_menu.h
-project\ui_core.o: ..\ui_scan.h
-project\ui_core.o: ..\ui_waveform.h
-project\ui_core.o: ..\ui_limit.h
+project\ui_core.o: ..\GUI\ui_menu.h
+project\ui_core.o: ..\GUI\ui_scan.h
+project\ui_core.o: ..\GUI\ui_waveform.h
+project\ui_core.o: ..\GUI\ui_limit.h
 project\ui_core.o: ..\APP\key.h
-project\ui_core.o: ..\ui_mode.h
+project\ui_core.o: ..\GUI\ui_mode.h

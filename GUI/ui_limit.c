@@ -94,7 +94,7 @@ void Sweep_Limit(void)
         // 幅度 + 偏置 ≤ 3300mV
         // 偏置 - 幅度 ≥ 0
 
-    case SCAN_PARAM_AMP:
+    case SCAN_PARAM_AMP:  
         data = getControllerValue(&Controller[SET_OFFSET][DAC_CH1]);
         max = 3300 - data;
         max = MIN(max, data);

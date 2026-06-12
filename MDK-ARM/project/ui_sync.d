@@ -1,5 +1,5 @@
-project\ui_sync.o: ..\ui_sync.c
-project\ui_sync.o: ..\ui_sync.h
+project\ui_sync.o: ..\GUI\ui_sync.c
+project\ui_sync.o: ..\GUI\ui_sync.h
 project\ui_sync.o: ../Core/Inc/main.h
 project\ui_sync.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_sync.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -63,9 +63,9 @@ project\ui_sync.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_sync.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_sync.o: ../Core/Inc/tim.h
 project\ui_sync.o: ../LCD/lcd.h
-project\ui_sync.o: ..\ui_layout.h
-project\ui_sync.o: ..\ui_draw.h
-project\ui_sync.o: ..\ui_menu.h
+project\ui_sync.o: ..\GUI\ui_layout.h
+project\ui_sync.o: ..\GUI\ui_draw.h
+project\ui_sync.o: ..\GUI\ui_menu.h
 project\ui_sync.o: ..\APP\waveform_generator.h
 project\ui_sync.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
-project\ui_sync.o: ..\ui_core.h
+project\ui_sync.o: ..\GUI\ui_core.h

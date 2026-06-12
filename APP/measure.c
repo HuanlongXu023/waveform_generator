@@ -3,7 +3,7 @@
 MeasureData_t MeasureData;
 
 static uint8_t first_cycle_done = 0;
-
+  
 void Measure_Handler(uint16_t GPIO_Pin)
 {
     if (GPIO_Pin == GPIO_PIN_0)

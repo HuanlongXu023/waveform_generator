@@ -1,5 +1,5 @@
-project\ui_limit.o: ..\ui_limit.c
-project\ui_limit.o: ..\ui_limit.h
+project\ui_limit.o: ..\GUI\ui_limit.c
+project\ui_limit.o: ..\GUI\ui_limit.h
 project\ui_limit.o: ../Core/Inc/main.h
 project\ui_limit.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_limit.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -63,9 +63,9 @@ project\ui_limit.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_limit.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_limit.o: ../Core/Inc/tim.h
 project\ui_limit.o: ..\APP\numeric_controller.h
-project\ui_limit.o: ..\ui_menu.h
+project\ui_limit.o: ..\GUI\ui_menu.h
 project\ui_limit.o: ../LCD/lcd.h
 project\ui_limit.o: ..\APP\waveform_generator.h
 project\ui_limit.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
-project\ui_limit.o: ..\ui_scan.h
-project\ui_limit.o: ..\ui_core.h
+project\ui_limit.o: ..\GUI\ui_scan.h
+project\ui_limit.o: ..\GUI\ui_core.h

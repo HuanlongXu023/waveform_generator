@@ -246,7 +246,7 @@ void ClearCurrentMenuSelected(uint8_t index)
 {
     wave_menu_set(index, 0);
 }
-
+ 
 /**
  * @brief 显示当前选中的菜单项
  *
@@ -554,7 +554,7 @@ void DrawWaveformSelect(uint8_t selected)
     LCD_Fill(LEFT_STR_X_START + 8 * 5, STR0_Y_START,
              LEFT_STR_X_START + 8 * 5 + FONT_SIZE * 6, STR0_Y_START + FONT_SIZE,
              BLACK);
-
+ 
     if (selected_ch == DAC_CH1)
         c = YELLOW;
     else

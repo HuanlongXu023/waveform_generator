@@ -1,5 +1,5 @@
-project\ui_waveform.o: ..\ui_waveform.c
-project\ui_waveform.o: ..\ui_waveform.h
+project\ui_waveform.o: ..\GUI\ui_waveform.c
+project\ui_waveform.o: ..\GUI\ui_waveform.h
 project\ui_waveform.o: ../Core/Inc/main.h
 project\ui_waveform.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_waveform.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -63,8 +63,8 @@ project\ui_waveform.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_waveform.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_waveform.o: ../Core/Inc/tim.h
 project\ui_waveform.o: ../LCD/lcd.h
-project\ui_waveform.o: ..\ui_layout.h
+project\ui_waveform.o: ..\GUI\ui_layout.h
 project\ui_waveform.o: ..\APP\waveform_generator.h
 project\ui_waveform.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 project\ui_waveform.o: ..\APP\host_device.h
-project\ui_waveform.o: ..\ui_core.h
+project\ui_waveform.o: ..\GUI\ui_core.h

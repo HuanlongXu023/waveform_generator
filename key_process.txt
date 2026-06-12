@@ -1,0 +1,285 @@
+================================================================================
+  keyval_process() 函数详解 -- 整个GUI的按键事件分发中枢
+================================================================================
+
+【一、数据流全景】
+
+  物理按键                    编码器 EC11
+  (4x4 矩阵键盘)              (PD12/PD13)
+       |                           |
+       v                           v
+  matrixkey_task()            EC11_RotateHandler()
+  (FreeRTOS 任务)             (GPIO EXTI 中断回调)
+       |                           |
+       | 扫描到按键                | 检测到旋转方向
+       | key_scan() 状态机消抖     | 计数+/- 后调用
+       |                           | EC11_ProcessCountChange()
+       |                           |
+       v                           v
+  osMessageQueuePut(KeyVelQueueHandle, &key_val, 0, 0)
+       |                           |
+       +-----------+---------------+
+                   |
+                   v
+         +---------------------+
+         |  KeyVelQueueHandle  |  <- FreeRTOS 消息队列 (容量16, uint8_t)
+         +---------------------+
+                   |
+                   v
+            ui_task() 循环等待
+            osMessageQueueGet(..., 100ms)
+                   |
+                   v
+            Buzzer_Start(100)  蜂鸣器反馈
+                   |
+                   v
+         +=============================+
+         |   keyval_process(btn_id)    |  <- ★ 核心分发函数
+         +=============================+
+                   |
+         +---------+----------+----------+----------+----------+
+         v         v          v          v          v          v
+      MODE_WAVE  MODE_SWEP  MODE_MEAS  MODE_SYS  MODE_SYNC  MODE_SAVE/LOAD
+
+
+
+【二、按键键值定义 (APP/key.h)】
+
+  +----------------+--------+-----------------------------------+
+  | 键值            | 来源   | 含义                              |
+  +----------------+--------+-----------------------------------+
+  | KEYVAL_0   (0) | 矩阵   | 菜单 INDEX_0 (频率设置)           |
+  | KEYVAL_1   (1) | 矩阵   | 菜单 INDEX_1 (幅度设置)           |
+  | KEYVAL_2   (2) | 矩阵   | 菜单 INDEX_2 (偏置设置)           |
+  | KEYVAL_3   (3) | 矩阵   | 菜单 INDEX_3 (占空比设置)         |
+  | KEYVAL_4   (4) | 矩阵   | 菜单 INDEX_4 (相位设置)           |
+  | KEYVAL_SINE(5) | 矩阵   | 切换到正弦波                      |
+  | KEYVAL_SWEEP(6)| 矩阵   | 切换到扫描模式                    |
+  | KEYVAL_CH1 (7) | 矩阵   | 通道1选择/开关                    |
+  | KEYVAL_LEFT(8) | 矩阵   | 向左选择数字位                    |
+  | KEYVAL_RECT(9) | 矩阵   | 切换到矩形波                      |
+  | KEYVAL_COUNT(10)| 矩阵  | 切换到测量/计数模式               |
+  | KEYVAL_OK  (11)| 矩阵   | 确认(扫描模式中启动扫描)          |
+  | KEYVAL_RIGHT(12)| 矩阵  | 向右选择数字位                    |
+  | KEYVAL_ANY (13)| 矩阵   | 切换到任意波形                    |
+  | KEYVAL_SYS (14)| 矩阵   | 切换到系统设置模式                |
+  | KEYVAL_CH2 (15)| 矩阵   | 通道2选择/开关                    |
+  | KEYVAL_EC11_ADD(16)| EC11| 编码器顺时针旋转(数值+)           |
+  | KEYVAL_EC11_SUB(17)| EC11| 编码器逆时针旋转(数值-)           |
+  +----------------+--------+-----------------------------------+
+
+  ★ 矩阵键盘 4x4 = 16 键 (0~15), 键值 = 列号*4 + 行号
+  ★ EC11 编码器产生额外的 ADD/SUB 键值 (16/17)
+
+
+
+【三、核心全局状态变量】
+
+  uint8_t signal_mode;     // 当前系统工作模式 (定义在 GUI/ui_mode.h)
+  uint8_t selected_ch;     // 当前选中的输出通道 (DAC_CH1=0 或 DAC_CH2=1)
+  uint8_t selected_index;  // 当前菜单中选中的参数项 (0~4 对应频率~相位,
+                           //   SET_MAX=5 表示正在选择波形类型)
+
+
+
+【四、switch-case 分支详解】
+
+  keyval_process() 内部是一个大型 switch, 按键被分为 4 个层级处理:
+
+  ========================================================================
+  第 1 层: 模式切换按键 (直接改变 signal_mode)
+  ========================================================================
+
+  KEYVAL_COUNT (计数键)
+    -> measure_mode_init()  切换到测量模式 (MODE_MEAS)
+      在测量模式下, ui_task() 会持续调用 refresh_measure_data() 刷新显示
+
+  KEYVAL_SWEEP (扫描键)
+    -> sweep_mode_init()    切换到扫描模式 (MODE_SWEP)
+
+  KEYVAL_SYS (系统键)
+    -> sys_mode_init()      切换到系统设置模式 (MODE_SYS)
+
+  ========================================================================
+  第 2 层: 波形快捷键 (MODE_WAVE 或 MODE_SWEP 下生效)
+  ========================================================================
+
+  KEYVAL_SINE / KEYVAL_RECT / KEYVAL_ANY:
+    -> 直接设置 wave_params[selected_ch].type 为对应波形
+    -> wave_start() 重新启动波形输出
+    -> 如果当前是 MODE_WAVE: 刷新菜单、重绘波形预览
+    -> 如果当前是 MODE_SWEP: 同时重置扫描参数
+
+  ========================================================================
+  第 3 层: 参数编辑按键 (EC11编码器 + 左右方向键 + CH键 + OK键)
+  ========================================================================
+
+  KEYVAL_LEFT / KEYVAL_RIGHT:
+    -> 在 MODE_WAVE 下: select_digit() -- 移动数字光标位(个十百千位)
+    -> 在 MODE_SWEP 下: sweep_select_digit() -- 移动扫描参数的数字位
+
+  KEYVAL_EC11_ADD / KEYVAL_EC11_SUB (编码器旋转):
+    在 MODE_WAVE 下, 分两种情况:
+      (a) selected_index == SET_MAX (5): 正在选波形
+          -> add_sub_waveform() 循环切换波形类型 (正弦->矩形->三角->任意->...)
+          -> DrawWaveformSelect(1) 重绘波形选择高亮
+      (b) selected_index < SET_MAX (0~4): 正在编辑参数
+          -> add_sub_digit() 在当前数字位上+1/-1
+          -> sync_copy() 同步复制到另一通道(如果同步开启)
+          -> limit_amp_offset() 限幅检查
+          -> DrawWaveformDispUpdate() 重绘波形预览
+          -> wave_start() 重启DAC输出
+          -> 对 AM/FM/CHIRP 特殊波形: 自动启停扫描
+
+    在 MODE_SWEP 下:
+      -> sweep_ec11_handle() 处理扫描参数编辑
+
+  KEYVAL_OK:
+    -> 仅在 MODE_SWEP 下: enable_sweep() 启动/停止扫描
+
+  KEYVAL_CH1 / KEYVAL_CH2:
+    -> 首次按下: 切换到对应通道, 并绘制通道选择界面
+    -> 再次按下同一通道: 切换该通道的开关状态 (ch_en[selected_ch] ^= 1)
+    -> 同时更新 DAC 输出和显示 (disp1_en / DAC_CH_en)
+
+  ========================================================================
+  第 4 层: default -- 菜单项选择 (0~4 / INDEX_0~INDEX_4)
+  ========================================================================
+
+  default 分支处理 KEYVAL_0 ~ KEYVAL_4 (即矩阵键盘上排按键):
+    selected_index = btn_id;   // 记录用户点击了哪个菜单项
+
+    根据当前 signal_mode 分发到对应处理函数:
+    +--------------+--------------------------------------------+
+    | MODE_WAVE    | DrawCurrentMenuSelected(btn_id)            |
+    |              | 高亮当前选中的参数项(频率/幅度/偏置等)     |
+    +--------------+--------------------------------------------+
+    | MODE_SWEP    | sweep_index_handle(btn_id)                 |
+    |              | 选择扫描参数(对象/截止/时间/模式/方向)     |
+    +--------------+--------------------------------------------+
+    | MODE_MEAS    | measure_index_handle(btn_id)               |
+    |              | 测量界面菜单交互(计数/暂停/清零等)         |
+    +--------------+--------------------------------------------+
+    | MODE_SYNC    | sync_menu_set_refresh(btn_id)              |
+    |              | 同步设置菜单(两通道参数同步开关)           |
+    +--------------+--------------------------------------------+
+    | MODE_SAVE    | save_set_refresh(btn_id)                   |
+    +--------------+--------------------------------------------+
+    | MODE_LOAD    | save_set_refresh(btn_id)                   |
+    +--------------+--------------------------------------------+
+    | MODE_SYS     | sys_index_handle(btn_id)                   |
+    |              | 系统设置菜单(存储/加载/同步/配置等)        |
+    +--------------+--------------------------------------------+
+
+  ★ 这是 keyval_process 设计的核心: 同一排物理按键(0~4), 在不同模式下有
+    完全不同的语义 -- 函数通过 signal_mode 动态路由到对应的处理逻辑。
+
+
+
+【五、系统工作模式 (signal_mode) 状态机】
+
+  +----------------------------------------------------+
+  |                    系统启动                          |
+  |           signal_mode = MODE_WAVE                   |
+  |                (波形模式)                            |
+  +-------------------------+--------------------------+
+                            |
+           +--------+-------+------+--------+
+           |        |       |      |        |
+      +----v--+ +---v--+ +-v---+ +v----+ +-v----+
+      | WAVE  | | SWEP | |MEAS | |SYS  | |SYNC  |
+      | 波形  | | 扫描 | |测量 | |系统 | |同步  |
+      | 模式  | | 模式 | |模式 | |模式 | |菜单  |
+      +-------+ +------+ +-----+ +--+--+ +--+---+
+                                     |       |
+                                +----v-+ +--v---+
+                                | SAVE | | LOAD |
+                                | 存储 | | 加载 |
+                                | 菜单 | | 菜单 |
+                                +------+ +------+
+
+  模式切换:
+    WAVE  -> MEAS : KEYVAL_COUNT  按键
+    WAVE  -> SWEP : KEYVAL_SWEEP  按键
+    任意  -> SYS  : KEYVAL_SYS    按键
+    SYS   -> SYNC : 在系统菜单中选中"同步"
+    SYS   -> SAVE : 在系统菜单中选中"存储"
+    SYS   -> LOAD : 在系统菜单中选中"加载"
+    SYNC  -> WAVE : 按 CH1/CH2 返回波形模式
+
+
+
+【六、调用链总结】
+
+  FreeRTOS 任务层:
+    freertos.c 创建消息队列 KeyVelQueueHandle (容量16)
+    ui_task()          <- 消费消息队列, 调用 keyval_process()
+    matrixkey_task()   <- 生产消息 (矩阵键盘扫描 -> 队列)
+    debug_task()       <- 调试用串口输入 (默认未注入队列)
+
+  中断层:
+    HAL_GPIO_EXTI_Callback()  (Core/Src/main.c:243)
+      +-- EC11_RotateHandler()        <- 编码器A相中断 (PD12)
+      +-- EC11_ProcessCountChange()   <- 编码器方向判断 -> 入队列
+      +-- Measure_Handler()           <- 测频输入捕获 (PE0)
+
+  GUI 处理层 (由 keyval_process 驱动):
+    ui_key.c      -- 按键分发主逻辑 (本文件)
+    ui_core.c     -- UI 主任务 ui_task()
+    ui_mode.c     -- 各模式初始化 (wave/swep/sys/sync/measure/save/load)
+    ui_menu.c     -- 菜单绘制与高亮
+    ui_waveform.c -- 波形预览绘制
+    ui_scan.c     -- 扫描参数设置与显示
+    ui_measure.c  -- 测量界面交互
+    ui_sync.c     -- 通道同步设置
+    ui_system.c   -- 系统设置菜单
+    ui_storage.c  -- 存储/加载界面
+    ui_limit.c    -- 参数限幅 (limit_amp_offset)
+    ui_display.c  -- 数据显示刷新
+    ui_select.c   -- 选择高亮处理
+
+  EC11 层:
+    EC11.c     -- 编码器旋转检测
+    EC11.h     -- 仅 include "main.h"
+    main.h     -- EC11_A_Pin = PD12, EC11_B_Pin = PD13
+
+  矩阵键盘层:
+    matrixkey.c  -- 4x4 矩阵扫描 + 消抖状态机
+    matrixkey.h  -- 行列 GPIO 定义
+
+
+
+【七、设计要点】
+
+1. keyval_process 是典型的 "状态机 + 策略模式" 设计:
+   - 外层 signal_mode 决定系统状态
+   - 内层 switch-case 按 btn_id 路由到具体操作
+   - default 分支进一步按 signal_mode 二次路由
+
+2. 消息队列解耦: 按键生产者(matrixkey_task / EC11中断) 与消费者(ui_task)
+   完全解耦, 通过 FreeRTOS 消息队列异步通信。
+
+3. 按键语义重载: 同一物理按键(0~4)在不同模式下有不同含义, 这是嵌入式
+   GUI 节省物理按键的典型做法。
+
+4. EC11 旋转编码器不经过矩阵扫描, 而是通过 GPIO EXTI 中断 (PD12) 直接
+   处理, 生成的 KEYVAL_EC11_ADD/SUB 与矩阵按键统一走消息队列。
+
+5. ui_task() 是唯一消费端: 100ms 超时轮询消息队列, 有消息则处理按键,
+   无消息时检查是否为 MODE_MEAS 并刷新测量数据。
+
+6. 按键反馈: 每次收到按键事件, Buzzer_Start(100) 响一声蜂鸣器作为反馈。
+
+================================================================================
+  文件: key_process.txt  |  生成日期: 2026-06-12
+  相关文件索引:
+    GUI/ui_key.c        -- keyval_process() 函数本体
+    GUI/ui_core.c       -- ui_task() 主循环
+    APP/key.h           -- 按键键值枚举
+    GUI/ui_mode.h       -- signal_mode 工作模式枚举
+    GUI/ui_menu.h       -- 菜单索引枚举 (INDEX_0~INDEX_4, SET_FREQ~SET_MAX)
+    EC11.c              -- 编码器旋转处理
+    matrixkey.c         -- 矩阵键盘扫描
+    Core/Src/freertos.c -- 消息队列创建
+    Core/Src/main.c     -- EXTI 中断回调
+================================================================================

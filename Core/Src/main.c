@@ -162,7 +162,7 @@ int main(void)
   MX_TIM9_Init();
   MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
-
+ 
   save_load_init();
 
   /* USER CODE END 2 */
@@ -239,7 +239,7 @@ uint64_t GetusTimeTicks(void)
 {
   return FreeRTOSRunTimeTicks;
 }
-
+ 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   EC11_RotateHandler(GPIO_Pin);

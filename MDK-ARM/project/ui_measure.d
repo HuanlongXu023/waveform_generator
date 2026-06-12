@@ -1,5 +1,5 @@
-project\ui_measure.o: ..\ui_measure.c
-project\ui_measure.o: ..\ui_measure.h
+project\ui_measure.o: ..\GUI\ui_measure.c
+project\ui_measure.o: ..\GUI\ui_measure.h
 project\ui_measure.o: ../Core/Inc/main.h
 project\ui_measure.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_measure.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -62,11 +62,11 @@ project\ui_measure.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 project\ui_measure.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_measure.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_measure.o: ../Core/Inc/tim.h
-project\ui_measure.o: ..\ui_layout.h
+project\ui_measure.o: ..\GUI\ui_layout.h
 project\ui_measure.o: ../LCD/lcd.h
-project\ui_measure.o: ..\ui_menu.h
+project\ui_measure.o: ..\GUI\ui_menu.h
 project\ui_measure.o: ..\APP\waveform_generator.h
 project\ui_measure.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 project\ui_measure.o: ..\APP\measure.h
-project\ui_measure.o: ..\ui_mode.h
-project\ui_measure.o: ..\ui_core.h
+project\ui_measure.o: ..\GUI\ui_mode.h
+project\ui_measure.o: ..\GUI\ui_core.h

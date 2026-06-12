@@ -5,7 +5,7 @@
 int16_t Encoder_Count;
  
 extern osMessageQueueId_t KeyVelQueueHandle;
-
+ 
 void EC11_RotateHandler(uint16_t GPIO_Pin)
 {
     static uint8_t A_cnt = 0;
@@ -37,7 +37,7 @@ void EC11_RotateHandler(uint16_t GPIO_Pin)
         }
     }
 }
-
+// 
 /**
  * @brief  处理编码器计数值的变化
  * @note   建议在主循环 while(1) 中持续调用此函数

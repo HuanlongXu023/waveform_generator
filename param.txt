@@ -1,0 +1,82 @@
+
+
+================================================================================
+  三、波形发生器（waveform_generator）
+================================================================================
+
+  变量名              类型                  定义位置          用途
+  ──────────────────  ────────────────────  ─────────────────  ──────────────────────
+  Waveform[2][8190]   uint16_t             APP/waveform_...   双通道波形数据缓冲区
+  wave_params[2]      ChannelParams_t      APP/waveform_...   双通道波形参数（频率/幅度/偏置/占空比/类型）
+  scan_params[2]      ScanParams_t         APP/waveform_...   双通道扫描参数（扫描模式/范围/时长）
+  params[2]           ChannelParams_t      APP/waveform_...   双通道参数副本
+  ref_voltage_mv      float                APP/waveform_...   参考电压(mV)，默认 3300
+
+  ChannelParams_t 结构体成员:
+    freq     (uint32_t)  频率 (Hz)，默认 1000
+    amp      (uint32_t)  幅度 (mV)，默认 1650
+    offset   (uint32_t)  偏置 (mV)，默认 1650
+    duty     (uint8_t)   占空比 (%)，默认 50
+    phase    (uint8_t)   相位 (°)，默认 0
+    type     (uint8_t)   波形类型（WAVE_SINE, WAVE_RECT, ...）
+
+  ScanParams_t 结构体成员:
+    扫描模式/方向/参数/起止值/时长/当前值
+
+================================================================================
+  四、测量（measure）
+================================================================================
+
+  变量名              类型                  定义位置          用途
+  ──────────────────  ────────────────────  ─────────────────  ──────────────────────
+  MeasureData         MeasureData_t        APP/measure.c     测量数据（周期/脉宽/占空比/频率/计数）
+  measure_setting     MeasureSetting_t     GUI/ui_measure.c  测量设置（模式/暂停/闸门）
+  FreeRTOSRunTimeTicks uint64_t            Core/Src/main.c   高精度时间戳（TIM11 500kHz驱动）
+
+  MeasureData_t 结构体成员:
+    High      (uint64_t) 上升沿时间
+    LastHigh  (uint64_t) 上次上升沿时间
+    LowTime   (uint64_t) 下降沿时间
+    LastLow   (uint64_t) 上次下降沿时间
+    Period    (uint64_t) 信号周期
+    Positive  (uint64_t) 正脉宽（高电平时间）
+    Negative  (uint64_t) 负脉宽（低电平时间）
+    duty      (uint8_t)  占空比 (%)
+    Frequency (uint32_t) 频率 (Hz)
+    Count     (uint32_t) 脉冲计数
+
+  MeasureSetting_t 结构体成员:
+    mode      (uint8_t) 测量模式：0=频率，1=计数
+    pause     (uint8_t) 暂停标志：0=运行，1=暂停
+    gate      (uint8_t) 闸门时间：0=1s，1=10s，2=100s
+
+
+================================================================================
+  六、UI 界面（GUI）
+================================================================================
+
+  变量名              类型                  定义位置          用途
+  ──────────────────  ────────────────────  ─────────────────  ──────────────────────
+  selected_index      uint8_t              GUI/ui_core.c     当前选中的菜单项索引
+  selected_ch         uint8_t              GUI/ui_core.c     当前选中的通道（0=CH1, 1=CH2）
+  signal_mode         uint8_t              GUI/ui_core.c     当前工作模式（MODE_WAVE等）
+  sweep_nub_index     uint8_t              GUI/ui_scan.c     扫描参数旋钮索引
+  sweep_start_end_flag uint8_t             GUI/ui_scan.c     扫描起止值设置标志
+  sync_data           SyncData_t           GUI/ui_menu.c     通道同步标志位
+
+  SyncData_t 结构体（位域）:
+    wave   :1  波形同步
+    freq   :1  频率同步
+    amp    :1  幅度同步
+    offset :1  偏置同步
+    duty   :1  占空比同步
+
+
+================================================================================
+  八、数据持久化（save_load）
+================================================================================
+
+  使用 EasyFlash (SFUD + FlashDB)，通过 sfud_read/sfud_erase_write 读写外部 SPI Flash
+  (W25Q64CV) 存储波形参数和 ARB 波形数据，无独立全局变量。
+
+================================================================================

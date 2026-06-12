@@ -102,7 +102,7 @@ void disp_down_rect(uint8_t ch)
                        BIG_ROUND_RADIUS, color);
 
     DrawLeftTopRect_2(color);
-
+ 
     if (ch == DAC_CH1)
     {
         Show_Str_Color(LEFT_STR_X_START, STR6_Y_START, "CH1=", color, BLACK);

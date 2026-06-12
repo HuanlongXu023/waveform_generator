@@ -85,52 +85,52 @@ int8_t key_scan(void)
     // 2. 状态机逻辑处理
     switch (current_state)
     {
-    case KEY_STATE_IDLE:
-    {
-        if (is_key_detected == 1)
+        case KEY_STATE_IDLE:
         {
-            cached_key = key_val;       // 缓存当前键值
-            tick_start = HAL_GetTick(); // 记录时间戳
-            current_state = KEY_STATE_DEBOUNCE;
-        }
-        break;
-    }
-
-    case KEY_STATE_DEBOUNCE:
-    {
-        // 等待消抖时间过去
-        if ((HAL_GetTick() - tick_start) > debounce_time)
-        {
-            // 再次检测按键是否仍然按下
-            if ((is_key_detected == 1) && (key_val == cached_key))
+            if (is_key_detected == 1)
             {
-                current_state = KEY_STATE_PRESSED;
+                cached_key = key_val;       // 缓存当前键值
+                tick_start = HAL_GetTick(); // 记录时间戳
+                current_state = KEY_STATE_DEBOUNCE;
             }
-            else
+            break;
+        }
+
+        case KEY_STATE_DEBOUNCE:
+        {
+            // 等待消抖时间过去
+            if ((HAL_GetTick() - tick_start) > debounce_time)
             {
-                // 抖动或误触，回到空闲
+                // 再次检测按键是否仍然按下
+                if ((is_key_detected == 1) && (key_val == cached_key))
+                {
+                    current_state = KEY_STATE_PRESSED;
+                }
+                else
+                {
+                    // 抖动或误触，回到空闲
+                    current_state = KEY_STATE_IDLE;
+                }
+            }
+            break;
+        }
+
+        case KEY_STATE_PRESSED:
+        {
+            // 在此状态返回一次键值，然后立即进入等待释放状态
+            current_state = KEY_STATE_WAIT_RELEASE;
+            return cached_key; // 核心：只在这里返回有效键值
+        }
+
+        case KEY_STATE_WAIT_RELEASE:
+        {
+            // 等待按键释放（所有行都检测不到低电平）
+            if (is_key_detected == 0)
+            {
                 current_state = KEY_STATE_IDLE;
             }
+            break;
         }
-        break;
-    }
-
-    case KEY_STATE_PRESSED:
-    {
-        // 在此状态返回一次键值，然后立即进入等待释放状态
-        current_state = KEY_STATE_WAIT_RELEASE;
-        return cached_key; // 核心：只在这里返回有效键值
-    }
-
-    case KEY_STATE_WAIT_RELEASE:
-    {
-        // 等待按键释放（所有行都检测不到低电平）
-        if (is_key_detected == 0)
-        {
-            current_state = KEY_STATE_IDLE;
-        }
-        break;
-    }
     }
 
     return -1; // 无按键事件或未到触发时机时返回 -1

@@ -1,5 +1,5 @@
-project\ec11.o: ..\EC11.c
-project\ec11.o: ..\EC11.h
+project\ec11.o: ..\Hardware\EC11.c
+project\ec11.o: ..\Hardware\EC11.h
 project\ec11.o: ../Core/Inc/main.h
 project\ec11.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ec11.o: ../Core/Inc/stm32f4xx_hal_conf.h

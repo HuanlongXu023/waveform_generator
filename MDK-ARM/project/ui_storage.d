@@ -1,5 +1,5 @@
-project\ui_storage.o: ..\ui_storage.c
-project\ui_storage.o: ..\ui_storage.h
+project\ui_storage.o: ..\GUI\ui_storage.c
+project\ui_storage.o: ..\GUI\ui_storage.h
 project\ui_storage.o: ../Core/Inc/main.h
 project\ui_storage.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_storage.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -63,11 +63,11 @@ project\ui_storage.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_storage.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_storage.o: ../Core/Inc/tim.h
 project\ui_storage.o: ../LCD/lcd.h
-project\ui_storage.o: ..\ui_layout.h
-project\ui_storage.o: ..\ui_draw.h
-project\ui_storage.o: ..\ui_menu.h
+project\ui_storage.o: ..\GUI\ui_layout.h
+project\ui_storage.o: ..\GUI\ui_draw.h
+project\ui_storage.o: ..\GUI\ui_menu.h
 project\ui_storage.o: ..\APP\waveform_generator.h
 project\ui_storage.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 project\ui_storage.o: ..\APP\save_load.h
-project\ui_storage.o: ..\ui_mode.h
-project\ui_storage.o: ..\ui_core.h
+project\ui_storage.o: ..\GUI\ui_mode.h
+project\ui_storage.o: ..\GUI\ui_core.h

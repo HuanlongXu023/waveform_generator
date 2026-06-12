@@ -1,5 +1,5 @@
-project\ui_menu.o: ..\ui_menu.c
-project\ui_menu.o: ..\ui_menu.h
+project\ui_menu.o: ..\GUI\ui_menu.c
+project\ui_menu.o: ..\GUI\ui_menu.h
 project\ui_menu.o: ../Core/Inc/main.h
 project\ui_menu.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_menu.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -65,5 +65,5 @@ project\ui_menu.o: ../Core/Inc/tim.h
 project\ui_menu.o: ../LCD/lcd.h
 project\ui_menu.o: ..\APP\waveform_generator.h
 project\ui_menu.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
-project\ui_menu.o: ..\ui_layout.h
-project\ui_menu.o: ..\ui_core.h
+project\ui_menu.o: ..\GUI\ui_layout.h
+project\ui_menu.o: ..\GUI\ui_core.h

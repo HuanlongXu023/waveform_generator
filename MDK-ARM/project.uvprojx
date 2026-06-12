@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../../debug;../lwrb/src/include/lwrb;../LCD;../sfud/inc;../easyflash/inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../cm_backtrace;..\APP</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../../debug;../lwrb/src/include/lwrb;../LCD;../sfud/inc;../easyflash/inc;../USB_DEVICE/App;../USB_DEVICE/Target;../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc;../cm_backtrace;..\APP;../GUI;../Hardware</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -416,79 +416,79 @@
           <GroupName>UI</GroupName>
           <Files>
             <File>
-              <FileName>ui_draw.c</FileName>
+              <FileName>ui_core.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ui_draw.c</FilePath>
+              <FilePath>..\GUI\ui_core.c</FilePath>
             </File>
             <File>
               <FileName>ui_display.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ui_display.c</FilePath>
+              <FilePath>..\GUI\ui_display.c</FilePath>
             </File>
             <File>
-              <FileName>ui_menu.c</FileName>
+              <FileName>ui_draw.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ui_menu.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_scan.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_scan.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_measure.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_measure.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_system.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_system.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_sync.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_sync.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_storage.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_storage.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_limit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_limit.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_waveform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_waveform.c</FilePath>
+              <FilePath>..\GUI\ui_draw.c</FilePath>
             </File>
             <File>
               <FileName>ui_key.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ui_key.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_select.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_select.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_mode.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_mode.c</FilePath>
-            </File>
-            <File>
-              <FileName>ui_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\ui_core.c</FilePath>
+              <FilePath>..\GUI\ui_key.c</FilePath>
             </File>
             <File>
               <FileName>ui_layout.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ui_layout.c</FilePath>
+              <FilePath>..\GUI\ui_layout.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_limit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_limit.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_measure.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_measure.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_mode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_mode.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_scan.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_scan.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_select.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_select.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_storage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_storage.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_sync.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_sync.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_system.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_system.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_waveform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\GUI\ui_waveform.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -621,19 +621,19 @@
           <GroupName>BSP</GroupName>
           <Files>
             <File>
-              <FileName>matrixkey.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\matrixkey.c</FilePath>
-            </File>
-            <File>
               <FileName>buzzer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\buzzer.c</FilePath>
+              <FilePath>..\Hardware\buzzer.c</FilePath>
             </File>
             <File>
               <FileName>EC11.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\EC11.c</FilePath>
+              <FilePath>..\Hardware\EC11.c</FilePath>
+            </File>
+            <File>
+              <FileName>matrixkey.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\matrixkey.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,5 +1,5 @@
-project\buzzer.o: ..\buzzer.c
-project\buzzer.o: ..\buzzer.h
+project\buzzer.o: ..\Hardware\buzzer.c
+project\buzzer.o: ..\Hardware\buzzer.h
 project\buzzer.o: ../Core/Inc/main.h
 project\buzzer.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\buzzer.o: ../Core/Inc/stm32f4xx_hal_conf.h

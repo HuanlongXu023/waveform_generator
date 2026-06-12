@@ -402,12 +402,12 @@ void host_device_Task(void *argument)
 void Freq_Task(void *argument)
 {
   /* USER CODE BEGIN Freq_Task */
-  osDelay(1000);
+  osDelay(1000);  // 先等1s,让系统各模块初始化完毕
 
   HAL_TIM_Base_Start(&htim2);
   TickType_t xLastWakeTime;
   xLastWakeTime = xTaskGetTickCount();
-  HAL_TIM_Base_Start_IT(&htim11);
+  HAL_TIM_Base_Start_IT(&htim11); // 和频率测量无关，测量脉宽和占空比
   // HAL_TIM_Base_Start_IT(&htim9);
 
   /* Infinite loop */
@@ -416,7 +416,7 @@ void Freq_Task(void *argument)
     TIM_Freq_Get();
     // HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
     // refresh_measure_data();
-    vTaskDelayUntil(&xLastWakeTime, get_measure_gate() * 1000);
+    vTaskDelayUntil(&xLastWakeTime, get_measure_gate() * 1000);  // 让出cpu,进入阻塞态
 
     // osDelay(1);
   }

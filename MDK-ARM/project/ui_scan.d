@@ -1,5 +1,5 @@
-project\ui_scan.o: ..\ui_scan.c
-project\ui_scan.o: ..\ui_layout.h
+project\ui_scan.o: ..\GUI\ui_scan.c
+project\ui_scan.o: ..\GUI\ui_layout.h
 project\ui_scan.o: ../Core/Inc/main.h
 project\ui_scan.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_scan.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -62,11 +62,11 @@ project\ui_scan.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 project\ui_scan.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_scan.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_scan.o: ../Core/Inc/tim.h
-project\ui_scan.o: ..\ui_scan.h
+project\ui_scan.o: ..\GUI\ui_scan.h
 project\ui_scan.o: ..\APP\waveform_generator.h
 project\ui_scan.o: D:\download_any\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 project\ui_scan.o: ..\APP\numeric_controller.h
 project\ui_scan.o: ../LCD/lcd.h
-project\ui_scan.o: ..\ui_core.h
-project\ui_scan.o: ..\ui_menu.h
-project\ui_scan.o: ..\ui_mode.h
+project\ui_scan.o: ..\GUI\ui_core.h
+project\ui_scan.o: ..\GUI\ui_menu.h
+project\ui_scan.o: ..\GUI\ui_mode.h

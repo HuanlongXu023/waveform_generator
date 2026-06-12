@@ -1,5 +1,5 @@
-project\ui_draw.o: ..\ui_draw.c
-project\ui_draw.o: ..\ui_draw.h
+project\ui_draw.o: ..\GUI\ui_draw.c
+project\ui_draw.o: ..\GUI\ui_draw.h
 project\ui_draw.o: ../Core/Inc/main.h
 project\ui_draw.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_draw.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -62,5 +62,5 @@ project\ui_draw.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 project\ui_draw.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
 project\ui_draw.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 project\ui_draw.o: ../Core/Inc/tim.h
-project\ui_draw.o: ..\ui_layout.h
+project\ui_draw.o: ..\GUI\ui_layout.h
 project\ui_draw.o: ../LCD/lcd.h

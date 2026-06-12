@@ -1,5 +1,5 @@
-project\ui_layout.o: ..\ui_layout.c
-project\ui_layout.o: ..\ui_layout.h
+project\ui_layout.o: ..\GUI\ui_layout.c
+project\ui_layout.o: ..\GUI\ui_layout.h
 project\ui_layout.o: ../Core/Inc/main.h
 project\ui_layout.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 project\ui_layout.o: ../Core/Inc/stm32f4xx_hal_conf.h
